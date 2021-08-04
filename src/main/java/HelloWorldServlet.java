@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
-@WebServlet(name = "NotHelloWorldServlet", urlPatterns = "/not-hello-world")
+@WebServlet(name = "HelloWorldServlet", urlPatterns = "/not-hello-world")
 public class HelloWorldServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
