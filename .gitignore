@@ -57,6 +57,7 @@ cmake-build-*/
 # IntelliJ
 out/
 target/
+src/main/resources/curriculum/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
