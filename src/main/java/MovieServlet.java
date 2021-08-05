@@ -1,3 +1,4 @@
+import data.DaoFactory;
 import data.Movie;
 
 import javax.servlet.annotation.WebServlet;
@@ -8,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 
 import com.google.gson.Gson;
+import data.MoviesDao;
 
 @WebServlet(name = "MovieServlet", urlPatterns = "/movies")
 public class MovieServlet extends HttpServlet {
@@ -20,11 +22,15 @@ public class MovieServlet extends HttpServlet {
             //get object which can write to the response
             PrintWriter out = response.getWriter();
 
-            //eventually get movies from the database
-            Movie movie = new Movie(2, "King Kong", "1942", "Clark Gable", "Fae Dunaway", "89786", "Nope", "cheap", "Gorilla on building");
+//            //eventually get movies from the database
+//            Movie movie = new Movie(2, "King Kong", "1942", "Clark Gable", "Fae Dunaway", "89786", "Nope", "cheap", "Gorilla on building");
+            //Polymorphism. Real world use
+            MoviesDao moviesDao = DaoFactory.getMoviesDao(DaoFactory.ImplType.IN_MEMORY);
+
 
             //turn into a json string
-            String movieString = new Gson().toJson(movie);
+            String movieString = new Gson().toJson(moviesDao.all());
+
             //inject into response
             out.println(movieString);
 
