@@ -1,5 +1,7 @@
 import com.google.gson.Gson;
+import data.DaoFactory;
 import data.Movie;
+import data.MoviesDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,16 +23,18 @@ public class MovieServlet extends HttpServlet {
             //get object which can write to the
             PrintWriter out = response.getWriter();
             //Eventually get movies from database
-            Movie movie = new Movie(2, "King Kong", 5, 2007, "Jack Black", "Jack Black", "none", "cool", "plot goes here");
+//            Movie movie = new Movie(2, "King Kong", 5, 2007, "Jack Black", "Jack Black", "none", "cool", "plot goes here");
 
             //Turn into json string
-            String movieString = new Gson().toJson(movie);
+            MoviesDao moviesDao = DaoFactory.getMoviesDao(DaoFactory.ImplType.IN_MEMORY);
+            String movieString = new Gson().toJson(moviesDao.all());
 
 //            inject into response
             out.println(movieString);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -48,19 +52,22 @@ public class MovieServlet extends HttpServlet {
             //Turn that stream of characters into array of movies
             //It will take a BufferedReader and attempts to convert that stream into an array of movies
             Movie[] movies = new Gson().fromJson(reader, Movie[].class); //Movie[].class is Providing a definition of what this object is (A blueprint)
+            DaoFactory
+                    .getMoviesDao(DaoFactory.ImplType.IN_MEMORY)
+                    .insert(movies[0]);
 
             //Loop over movies array and sout out every property, just to see if it all came through
             //Will eventually be commented out since this is just to test if movies are being returned
-            for (Movie movie : movies) {
-                System.out.println(movie.getId());
-                System.out.println(movie.getTitle());
-                System.out.println(movie.getDirector());
-                System.out.println(movie.getActors());
-                System.out.println(movie.getGenre());
-                System.out.println(movie.getPlot());
-                System.out.println(movie.getPoster());
-                System.out.println("==========================================");
-            }
+//            for (Movie movie : movies) {
+//                System.out.println(movie.getId());
+//                System.out.println(movie.getTitle());
+//                System.out.println(movie.getDirector());
+//                System.out.println(movie.getActors());
+//                System.out.println(movie.getGenre());
+//                System.out.println(movie.getPlot());
+//                System.out.println(movie.getPoster());
+//                System.out.println("==========================================");
+//            }
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -115,7 +122,6 @@ public class MovieServlet extends HttpServlet {
             int id = new Gson().fromJson(reader, int.class);
 
             System.out.println("The movie ID was " + id);
-
 
 
         } catch (Exception e) {
