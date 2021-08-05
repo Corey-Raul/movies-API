@@ -32,20 +32,40 @@ public class MovieServlet extends HttpServlet {
             System.out.println(ex.getMessage());
         }
     }
-
+    //movies/{id}
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
 
+        PrintWriter out = null;
         try {
+            out = response.getWriter();
             //get the stream of characters from the request (eventually becomes our movie)
             BufferedReader reader = request.getReader();
 
             // turn that stream into an array of Movies
             Movie[] movies = new Gson().fromJson(reader, Movie[].class);
 
+            //sout out properties of each movie so we know the objects made it into our code
+            for (Movie movie : movies){
+                System.out.println(movie.getId());
+                System.out.println(movie.getTitle());
+                System.out.println(movie.getDirector());
+                System.out.println(movie.getActors());
+                System.out.println(movie.getGenre());
+                System.out.println(movie.getImdbID());
+                System.out.println(movie.getPlot());
+                System.out.println(movie.getPoster());
+                System.out.println("******************************");
+            }
+
+
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
+
+        out.println(new Gson().toJson("{message: \"Movies POST was successful\"}"));
+        response.setStatus(200);
+
     }
 }
