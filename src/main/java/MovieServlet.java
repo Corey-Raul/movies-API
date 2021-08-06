@@ -56,19 +56,6 @@ public class MovieServlet extends HttpServlet {
                     .getMoviesDao(DaoFactory.ImplType.IN_MEMORY)
                     .insert(movies[0]);
 
-            //Loop over movies array and sout out every property, just to see if it all came through
-            //Will eventually be commented out since this is just to test if movies are being returned
-//            for (Movie movie : movies) {
-//                System.out.println(movie.getId());
-//                System.out.println(movie.getTitle());
-//                System.out.println(movie.getDirector());
-//                System.out.println(movie.getActors());
-//                System.out.println(movie.getGenre());
-//                System.out.println(movie.getPlot());
-//                System.out.println(movie.getPoster());
-//                System.out.println("==========================================");
-//            }
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -93,16 +80,6 @@ public class MovieServlet extends HttpServlet {
 
             DaoFactory.getMoviesDao(DaoFactory.ImplType.IN_MEMORY).update(movie);
 //            moviesDao.update(movie);
-
-                System.out.println(movie.getId());
-                System.out.println(movie.getTitle());
-                System.out.println(movie.getDirector());
-                System.out.println(movie.getActors());
-                System.out.println(movie.getGenre());
-                System.out.println(movie.getPlot());
-                System.out.println(movie.getPoster());
-                System.out.println("==========================================");
-
 
         } catch (Exception e) {
             out.println(new Gson().toJson(e.getLocalizedMessage()));

@@ -9,10 +9,7 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class InMemoryMoviesDao implements MoviesDao {
 
@@ -70,6 +67,7 @@ public class InMemoryMoviesDao implements MoviesDao {
         int count = 1;
         for (Movie movie : movies) {
             movieHashMap.put(count, movie);
+            movie.setId(count);
             count++;
         }
         return movieHashMap;
