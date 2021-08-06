@@ -89,9 +89,11 @@ public class MovieServlet extends HttpServlet {
 
             //'Where am I getting it from and what am I trying to turn it into?
             //Getting it from 'reader' and trying to turn it into Movie objects
-            Movie[] movies = new Gson().fromJson(reader, Movie[].class);
+            Movie movie = new Gson().fromJson(reader, Movie.class);
 
-            for (Movie movie : movies) {
+            DaoFactory.getMoviesDao(DaoFactory.ImplType.IN_MEMORY).update(movie);
+//            moviesDao.update(movie);
+
                 System.out.println(movie.getId());
                 System.out.println(movie.getTitle());
                 System.out.println(movie.getDirector());
@@ -100,10 +102,13 @@ public class MovieServlet extends HttpServlet {
                 System.out.println(movie.getPlot());
                 System.out.println(movie.getPoster());
                 System.out.println("==========================================");
-            }
+
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            out.println(new Gson().toJson(e.getLocalizedMessage()));
+            response.setStatus(500);
+            e.printStackTrace();
+            return;
         }
 
         out.println(new Gson().toJson("{message: \"Movies PUT was successfull\"}"));
@@ -120,12 +125,16 @@ public class MovieServlet extends HttpServlet {
             BufferedReader reader = request.getReader();
 
             int id = new Gson().fromJson(reader, int.class);
+            DaoFactory.getMoviesDao(DaoFactory.ImplType.IN_MEMORY).destroy(id);
 
             System.out.println("The movie ID was " + id);
 
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            out.println(new Gson().toJson(e.getLocalizedMessage()));
+            response.setStatus(500);
+            e.printStackTrace();
+            return;
         }
 
         out.println(new Gson().toJson("message: \"Movie Deleted Successfully\""));
