@@ -52,6 +52,8 @@ public class MovieServlet extends HttpServlet {
             // turn that stream into an array of Movies
             Movie[] movies = new Gson().fromJson(reader, Movie[].class);
 
+            DaoFactory.getMoviesDao(DaoFactory.ImplType.IN_MEMORY).insert(movies[0]);
+
             //sout out properties of each movie so we know the objects made it into our code
             for (Movie movie : movies){
                 System.out.println(movie.getId());
