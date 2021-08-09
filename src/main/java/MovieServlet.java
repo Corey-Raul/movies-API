@@ -26,7 +26,7 @@ public class MovieServlet extends HttpServlet {
 //            Movie movie = new Movie(2, "King Kong", 5, 2007, "Jack Black", "Jack Black", "none", "cool", "plot goes here");
 
             //Turn into json string
-            MoviesDao moviesDao = DaoFactory.getMoviesDao(DaoFactory.ImplType.IN_MEMORY);
+            MoviesDao moviesDao = DaoFactory.getMoviesDao(DaoFactory.ImplType.MYSQL);
             String movieString = new Gson().toJson(moviesDao.all());
 
 //            inject into response
@@ -53,15 +53,15 @@ public class MovieServlet extends HttpServlet {
             //It will take a BufferedReader and attempts to convert that stream into an array of movies
             Movie[] movies = new Gson().fromJson(reader, Movie[].class); //Movie[].class is Providing a definition of what this object is (A blueprint)
             DaoFactory
-                    .getMoviesDao(DaoFactory.ImplType.IN_MEMORY)
-                    .insert(movies[0]);
+                    .getMoviesDao(DaoFactory.ImplType.MYSQL)
+                    .insertAll(movies);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
         //write a meaningful response body and set the status code to 200
-        out.println(new Gson().toJson("{message: \"Movies POST was successfull\"}"));
+        out.println(new Gson().toJson("{message: \"Movies POST was successful\"}"));
         response.setStatus(200);
     }
 
@@ -78,7 +78,7 @@ public class MovieServlet extends HttpServlet {
             //Getting it from 'reader' and trying to turn it into Movie objects
             Movie movie = new Gson().fromJson(reader, Movie.class);
 
-            DaoFactory.getMoviesDao(DaoFactory.ImplType.IN_MEMORY).update(movie);
+            DaoFactory.getMoviesDao(DaoFactory.ImplType.MYSQL).update(movie);
 //            moviesDao.update(movie);
 
         } catch (Exception e) {
@@ -88,7 +88,7 @@ public class MovieServlet extends HttpServlet {
             return;
         }
 
-        out.println(new Gson().toJson("{message: \"Movies PUT was successfull\"}"));
+        out.println(new Gson().toJson("{message: \"Movie was updated successfully\"}"));
         response.setStatus(200);
     }
 
@@ -102,7 +102,7 @@ public class MovieServlet extends HttpServlet {
             BufferedReader reader = request.getReader();
 
             int id = new Gson().fromJson(reader, int.class);
-            DaoFactory.getMoviesDao(DaoFactory.ImplType.IN_MEMORY).destroy(id);
+            DaoFactory.getMoviesDao(DaoFactory.ImplType.MYSQL).destroy(id);
 
             System.out.println("The movie ID was " + id);
 

@@ -1,13 +1,9 @@
 package data;
 
-import data.InMemoryMoviesDao;
-import data.MoviesDao;
-//import data.MySqlMoviesDao;
-
 public class DaoFactory {
 
     private static MoviesDao moviesDao;
-//    private static Config config = new Config();
+    private static Config config = new Config();
 
     public enum ImplType {MYSQL, IN_MEMORY}
 
@@ -20,6 +16,13 @@ public class DaoFactory {
                 if (moviesDao == null) {
                     moviesDao = new InMemoryMoviesDao();
                 }
+                break;
+            }
+            case MYSQL: {
+                if(moviesDao == null){
+                    moviesDao = new MySqlMoviesDao(config);
+                }
+                break;
             }
         }
         return moviesDao;
