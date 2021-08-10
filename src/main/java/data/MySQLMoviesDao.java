@@ -3,10 +3,8 @@ package data;
 
 import com.mysql.cj.jdbc.Driver;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MySQLMoviesDao implements MoviesDao {
@@ -25,7 +23,7 @@ public class MySQLMoviesDao implements MoviesDao {
             );
         }
        catch(SQLException e){
-                throw new RuntimeException("Error connnecting to the database", e);
+                throw new RuntimeException("Error connecting to the database", e);
             }
 
 
@@ -33,7 +31,28 @@ public class MySQLMoviesDao implements MoviesDao {
 
     @Override
     public List<Movie> all() throws SQLException {
-        return null;
+
+
+        Statement statement = connection.createStatement();
+
+        ResultSet rs = statement.executeQuery("SELECT * FROM movies");
+
+        List<Movie> movies = new ArrayList<>();
+
+        while(rs.next()){
+            movies.add(new Movie(
+                    rs.getInt("id"),
+                    rs.getString("title"),
+                    rs.getString("year"),
+                    rs.getString("director"),
+                    rs.getString("actors"),
+                    rs.getString("rating"),
+                    rs.getString("poster"),
+                    rs.getString("genre"),
+                    rs.getString("plot")
+            ));
+        }
+        return movies;
     }
 
     @Override
@@ -50,7 +69,7 @@ public class MySQLMoviesDao implements MoviesDao {
 
         // Build sql template
         StringBuilder sql = new StringBuilder("INSERT INTO movies (" +
-                "id, title, year, director, actors, imdbId, poster, genre, plot) " +
+                "id, title, year, director, actors, rating, poster, genre, plot) " +
                 "VALUES ");
 
 
@@ -73,7 +92,7 @@ public class MySQLMoviesDao implements MoviesDao {
             statement.setString((counter * 9) + 3, movie.getYear());
             statement.setString((counter * 9) + 4, movie.getDirector());
             statement.setString((counter * 9) + 5, movie.getActors());
-            statement.setString((counter * 9) + 6, movie.getImdbID());
+            statement.setString((counter * 9) + 6, movie.getrating());
             statement.setString((counter * 9) + 7, movie.getPoster());
             statement.setString((counter * 9) + 8, movie.getGenre());
             statement.setString((counter * 9) + 9, movie.getPlot());
@@ -84,12 +103,35 @@ public class MySQLMoviesDao implements MoviesDao {
 
     @Override
     public void update(Movie movie) throws SQLException {
+     String sql = "UPDATE movies " +
+             "SET title = ?, rating = ?, poster = ?, year = ?, genre = ?, director = ?, plot = ?, actors = ? " +
+             "WHERE id = ?";
 
+     PreparedStatement statement = connection.prepareStatement(sql);
+
+        statement.setString(1, movie.getTitle());
+        statement.setString(2, movie.getrating());
+        statement.setString(3, movie.getPoster());
+        statement.setString(4, movie.getYear());
+        statement.setString(5, movie.getGenre());
+        statement.setString(6, movie.getDirector());
+        statement.setString(7, movie.getPlot());
+        statement.setString(8, movie.getActors());
+        statement.setInt(9, movie.getId());
+
+      statement.executeUpdate();
     }
 
     @Override
     public void destroy(int id) throws SQLException {
 
+        String sql = "DELETE FROM movies WHERE id = ?";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        statement.setInt(1, id);
+
+        statement.execute();
     }
 }
 
