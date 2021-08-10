@@ -25,7 +25,7 @@ public class MovieServlet extends HttpServlet {
 //            //eventually get movies from the database
 //            Movie movie = new Movie(2, "King Kong", "1942", "Clark Gable", "Fae Dunaway", "89786", "Nope", "cheap", "Gorilla on building");
             //Polymorphism. Real world use
-            MoviesDao moviesDao = DaoFactory.getMoviesDao(DaoFactory.ImplType.IN_MEMORY);
+            MoviesDao moviesDao = DaoFactory.getMoviesDao(DaoFactory.ImplType.MYSQL);
 
 
             //turn into a json string
@@ -52,7 +52,7 @@ public class MovieServlet extends HttpServlet {
             // turn that stream into an array of Movies
             Movie[] movies = new Gson().fromJson(reader, Movie[].class);
 
-            DaoFactory.getMoviesDao(DaoFactory.ImplType.IN_MEMORY).insert(movies[0]);
+            DaoFactory.getMoviesDao(DaoFactory.ImplType.MYSQL).insert(movies[0]);
 
             //sout out properties of each movie so we know the objects made it into our code
             for (Movie movie : movies){
