@@ -1,3 +1,6 @@
+//Create Read Update Delete
+// DELETE(DELETES) Deletes an existing entry
+
 fetch("http://localhost:8080/movies", {
     method: 'DELETE',
     headers: {

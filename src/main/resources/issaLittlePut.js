@@ -1,3 +1,5 @@
+//Create Read Update Delete
+// PUT(READ) updates an existing entry/row = to one movie
 fetch("http://localhost:8080/movies", {
     method: 'PUT',
     headers: {

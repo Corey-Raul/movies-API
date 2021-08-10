@@ -1,3 +1,5 @@
+//Create Read Update Delete
+// POST(CREATE) ADDS an existing entry
 fetch("http://localhost:8080/movies", {
     method: 'POST',
     headers: {

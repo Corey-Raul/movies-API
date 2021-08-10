@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 import com.google.gson.Gson;
 import data.MoviesDao;
@@ -52,7 +53,7 @@ public class MovieServlet extends HttpServlet {
             // turn that stream into an array of Movies
             Movie[] movies = new Gson().fromJson(reader, Movie[].class);
 
-            DaoFactory.getMoviesDao(DaoFactory.ImplType.MYSQL).insert(movies[0]);
+            DaoFactory.getMoviesDao(DaoFactory.ImplType.MYSQL).insertAll(movies);
 
             //sout out properties of each movie so we know the objects made it into our code
             for (Movie movie : movies){
@@ -89,6 +90,8 @@ public class MovieServlet extends HttpServlet {
             BufferedReader reader = request.getReader();
 
             Movie[] movies = new Gson().fromJson(reader, Movie[].class);
+            System.out.println(Arrays.toString(movies));
+            DaoFactory.getMoviesDao(DaoFactory.ImplType.MYSQL).update(movies[0]);
 
             for (Movie movie : movies){
                 System.out.println(movie.getId());
