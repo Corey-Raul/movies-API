@@ -51,10 +51,11 @@ public class MovieServlet extends HttpServlet {
 
             //Turn that stream of characters into array of movies
             //It will take a BufferedReader and attempts to convert that stream into an array of movies
-            Movie[] movies = new Gson().fromJson(reader, Movie[].class); //Movie[].class is Providing a definition of what this object is (A blueprint)
+            Movie movie = new Gson().fromJson(reader, Movie.class); //Movie[].class is Providing a definition of what this object is (A blueprint)
+            System.out.println(movie);
             DaoFactory
                     .getMoviesDao(DaoFactory.ImplType.MYSQL)
-                    .insertAll(movies);
+                    .insert(movie);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
